@@ -4,6 +4,7 @@ import com.library.book.BookItem;
 import com.library.book.BookItemStatus;
 import com.library.loan.exception.*;
 import com.library.member.Member;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.Clock;
@@ -22,11 +23,16 @@ class LoanPolicyTest {
             Instant.parse("2026-08-26T00:00:00Z"), ZoneOffset.UTC
     );
     private final LoanPolicy loanPolicy = new LoanPolicy(clock);
+    private Member member;
+
+    @BeforeEach
+    void setUp() {
+        member = new Member(1L, "홍길동");
+    }
 
     @Test
     void 조건을_모두_만족하면_대여가_생성된다() {
         // given
-        Member member = new Member(1L, "홍길동");
         BookItem bookItem = new BookItem(103L, 10L, BookItemStatus.AVAILABLE);
         List<Loan> activeLoans = List.of();
         List<Loan> returnedLoansWithPenalty = List.of();
@@ -44,7 +50,6 @@ class LoanPolicyTest {
     @Test
     void 최대_3권_초과_시_대여할_수_없다() {
         // given
-        Member member = new Member(1L, "홍길동");
         BookItem bookItem = new BookItem(104L, 13L, BookItemStatus.AVAILABLE);
         List<Loan> activeLoans = new ArrayList<>();
         activeLoans.add(new Loan(1L, 101L, new LoanPeriod(LocalDate.now(clock), 14)));
@@ -59,7 +64,6 @@ class LoanPolicyTest {
     @Test
     void 연체_중인_대여가_있을_시_대여할_수_없다() {
         // given
-        Member member = new Member(1L, "홍길동");
         BookItem bookItem = new BookItem(102L, 13L, BookItemStatus.AVAILABLE);
         List<Loan> activeLoans = new ArrayList<>();
         activeLoans.add(new Loan(1L, 101L, new LoanPeriod(LocalDate.now(clock).minusDays(15), 14)));
@@ -72,7 +76,6 @@ class LoanPolicyTest {
     @Test
     void 페널티_기간_중일_시_대여할_수_없다() {
         // given
-        Member member = new Member(1L, "홍길동");
         BookItem bookItem = new BookItem(102L, 13L, BookItemStatus.AVAILABLE);
         List<Loan> activeLoans = List.of();
         List<Loan> returnedLoansWithPenalty = new ArrayList<>();
@@ -90,7 +93,6 @@ class LoanPolicyTest {
     @Test
     void 책이_대여_불가_상태일_시_대여할_수_없다() {
         // given
-        Member member = new Member(1L, "홍길동");
         BookItem bookItem = new BookItem(101L, 13L, BookItemStatus.DAMAGED);
         List<Loan> activeLoans = List.of();
         List<Loan> returnedLoansWithPenalty = List.of();
