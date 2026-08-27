@@ -1,0 +1,33 @@
+package com.library.loan;
+
+import java.time.LocalDate;
+import java.time.Period;
+
+public class LoanPeriod {
+    private final LocalDate startDate;
+    private final LocalDate dueDate;
+
+    public LoanPeriod(LocalDate startDate, int loanDays) {
+        this.startDate = startDate;
+        this.dueDate = startDate.plusDays(loanDays);
+    }
+
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public LocalDate getDueDate() {
+        return dueDate;
+    }
+
+    public boolean isOverdueAt(LocalDate date) {
+        return date.isAfter(dueDate);
+    }
+
+    public int overdueDaysAt(LocalDate date) {
+        if (!isOverdueAt(date)) {
+            return 0;
+        }
+        return Period.between(dueDate, date).getDays();
+    }
+}
