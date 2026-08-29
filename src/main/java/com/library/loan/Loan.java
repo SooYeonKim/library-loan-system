@@ -1,6 +1,7 @@
 package com.library.loan;
 
 import com.library.book.BookItem;
+import com.library.loan.exception.AlreadyReturnedException;
 
 import java.time.LocalDate;
 
@@ -47,7 +48,7 @@ public class Loan {
 
     public void returnBook(BookItem bookItem, LocalDate today) {
         if (this.returnedDate != null) {
-            throw new IllegalStateException("이미 반납되었습니다.");
+            throw new AlreadyReturnedException();
         }
         this.returnedDate = today;
         if (period.isOverdueAt(today)) {
