@@ -1,11 +1,16 @@
 package com.library.loan;
 
+import jakarta.persistence.Embeddable;
+
 import java.time.LocalDate;
 import java.time.Period;
 
+@Embeddable
 public class LoanPeriod {
-    private final LocalDate startDate;
-    private final LocalDate dueDate;
+    private LocalDate startDate;
+    private LocalDate dueDate;
+
+    protected LoanPeriod() {}
 
     public LoanPeriod(LocalDate startDate, int loanDays) {
         this.startDate = startDate;

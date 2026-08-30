@@ -1,9 +1,22 @@
 package com.library.book;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Version;
+
+@Entity
 public class BookItem {
-    private final Long id;
-    private final Long bookId;
+    @Id @GeneratedValue
+    private Long id;
+
+    @Version
+    private Long version;
+
+    private Long bookId;
     private BookItemStatus status; // AVAILABLE, LOANED, LOST, DAMAGED
+
+    protected BookItem() {}
 
     public BookItem(Long id, Long bookId, BookItemStatus status) {
         this.id = id;

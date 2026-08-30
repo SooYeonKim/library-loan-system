@@ -2,15 +2,28 @@ package com.library.loan;
 
 import com.library.book.BookItem;
 import com.library.loan.exception.AlreadyReturnedException;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 
 import java.time.LocalDate;
 
+@Entity
 public class Loan {
-    private final Long memberId;
-    private final Long bookItemId;
-    private final LoanPeriod period;
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    @Embedded
+    private LoanPeriod period;
+
+    private Long memberId;
+    private Long bookItemId;
     private LocalDate returnedDate;
     private LocalDate penaltyEndDate;
+
+    protected Loan() {}
 
     Loan(Long memberId, Long bookItemId, LoanPeriod period) {
         this.memberId = memberId;

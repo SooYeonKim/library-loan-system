@@ -18,7 +18,7 @@ public class LoanPolicy {
         this.clock = clock;
     }
 
-    public Loan createLoan(Member member, BookItem bookItem,
+    public Loan createLoan(Long memberId, BookItem bookItem,
                            List<Loan> activeLoans, List<Loan> returnedLoansWithPenalty) {
         LocalDate today = LocalDate.now(clock);
 
@@ -42,7 +42,7 @@ public class LoanPolicy {
         }
 
         LoanPeriod period = new LoanPeriod(today, STANDARD_LOAN_DAYS);
-        Loan loan = new Loan(member.getId(), bookItem.getId(), period);
+        Loan loan = new Loan(memberId, bookItem.getId(), period);
         bookItem.markAsLoaned();
         return loan;
     }

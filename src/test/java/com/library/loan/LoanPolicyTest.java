@@ -23,12 +23,6 @@ class LoanPolicyTest {
             Instant.parse("2026-08-26T00:00:00Z"), ZoneOffset.UTC
     );
     private final LoanPolicy loanPolicy = new LoanPolicy(clock);
-    private Member member;
-
-    @BeforeEach
-    void setUp() {
-        member = new Member(1L, "홍길동");
-    }
 
     @Test
     void 조건을_모두_만족하면_대여가_생성된다() {
@@ -38,7 +32,7 @@ class LoanPolicyTest {
         List<Loan> returnedLoansWithPenalty = List.of();
 
         // when
-        Loan loan = loanPolicy.createLoan(member, bookItem, activeLoans, returnedLoansWithPenalty);
+        Loan loan = loanPolicy.createLoan(1L, bookItem, activeLoans, returnedLoansWithPenalty);
 
         // then
         assertThat(loan.getMemberId()).isEqualTo(1L);
@@ -58,7 +52,7 @@ class LoanPolicyTest {
         List<Loan> returnedLoansWithPenalty = List.of();
 
         // when & then
-        assertThatThrownBy(() -> loanPolicy.createLoan(member, bookItem, activeLoans, returnedLoansWithPenalty)).isInstanceOf(MaxLoanExceededException.class);
+        assertThatThrownBy(() -> loanPolicy.createLoan(1L, bookItem, activeLoans, returnedLoansWithPenalty)).isInstanceOf(MaxLoanExceededException.class);
     }
 
     @Test
@@ -70,7 +64,7 @@ class LoanPolicyTest {
         List<Loan> returnedLoansWithPenalty = List.of();
 
         // when & then
-        assertThatThrownBy(() -> loanPolicy.createLoan(member, bookItem, activeLoans, returnedLoansWithPenalty)).isInstanceOf(OverdueLoanExistsException.class);
+        assertThatThrownBy(() -> loanPolicy.createLoan(1L, bookItem, activeLoans, returnedLoansWithPenalty)).isInstanceOf(OverdueLoanExistsException.class);
     }
 
     @Test
@@ -87,7 +81,7 @@ class LoanPolicyTest {
         returnedLoansWithPenalty.add(penaltyLoan);
 
         // when & then
-        assertThatThrownBy(() -> loanPolicy.createLoan(member, bookItem, activeLoans, returnedLoansWithPenalty)).isInstanceOf(PenaltyPeriodException.class);
+        assertThatThrownBy(() -> loanPolicy.createLoan(1L, bookItem, activeLoans, returnedLoansWithPenalty)).isInstanceOf(PenaltyPeriodException.class);
     }
 
     @Test
@@ -98,6 +92,6 @@ class LoanPolicyTest {
         List<Loan> returnedLoansWithPenalty = List.of();
 
         // when & then
-        assertThatThrownBy(() -> loanPolicy.createLoan(member, bookItem, activeLoans, returnedLoansWithPenalty)).isInstanceOf(BookItemNotAvailableException.class);
+        assertThatThrownBy(() -> loanPolicy.createLoan(1L, bookItem, activeLoans, returnedLoansWithPenalty)).isInstanceOf(BookItemNotAvailableException.class);
     }
 }
