@@ -31,6 +31,10 @@ public class Loan {
         this.period = period;
     }
 
+    public Long getId() {
+        return id;
+    }
+
     public Long getMemberId() {
         return memberId;
     }
